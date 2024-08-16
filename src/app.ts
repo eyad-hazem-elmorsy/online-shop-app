@@ -1,5 +1,4 @@
 import express, { Express } from 'express';
-import path from 'path';
 
 // Create application
 const app: Express = express();
