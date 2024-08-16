@@ -5,7 +5,7 @@ import path from 'path';
 const app: Express = express();
 
 // Determine assets path
-app.use(express.static(path.join(__dirname, 'assets')));
+app.use(express.static('assets'));
 
 // Setting a template engine
 app.set('view engine', 'ejs');
