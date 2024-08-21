@@ -3,6 +3,19 @@
 
 <br>
 <div class="container">
+
+    <form action="/" method="PUT">
+        <select name="category" class="form-control">
+            <option value="all">All</option>
+            <option value="clothes">Clothes</option>
+            <option value="phones">Phones</option>
+            <option value="computers">Computers</option>
+        </select>
+        <br>
+        <input type="submit" class="btn btn-primary" value="Filter">
+    </form>
+    <br>
+
     <div class="row">
         <% for (let product of products) { %>
             <div class="col col-12 col-md-6 col-lg-4 col-xl-3">

@@ -22,10 +22,13 @@ const productSchema: Schema<IProduct> = new Schema({
 const Product = mongoose.model<IProduct>('Product', productSchema);
 
 // Services
-const getAllProducts = (): Promise<IProduct[]> => {
+const getProducts = (category: string): Promise<IProduct[]> => {
     return new Promise<IProduct[]>((resolve, reject) => {
         mongoose.connect(dbUrl).then(() => {
-            return Product.find({});
+            if (category === 'all')
+                return Product.find({});
+            else
+                return Product.find({ category: category });
         }).then((products: IProduct[]) => {
             mongoose.disconnect();
             resolve(products);
@@ -35,4 +38,4 @@ const getAllProducts = (): Promise<IProduct[]> => {
     });
 }
 
-export { Product, IProduct, getAllProducts };
+export { Product, IProduct, getProducts };
