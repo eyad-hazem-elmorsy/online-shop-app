@@ -1,5 +1,8 @@
-import mongoose, {Document, Schema} from 'mongoose';
+import mongoose, { Document, Schema } from 'mongoose';
 
+const dbUrl: string = process.env.DB_URL || 'mongodb://localhost:27017/online-shop';
+
+// Identifying
 interface IProduct extends Document {
     name: string;
     image?: string;
@@ -18,4 +21,18 @@ const productSchema: Schema<IProduct> = new Schema({
 
 const Product = mongoose.model<IProduct>('Product', productSchema);
 
-export { Product, IProduct };
+// Services
+const getAllProducts = (): Promise<IProduct[]> => {
+    return new Promise<IProduct[]>((resolve, reject) => {
+        mongoose.connect(dbUrl).then(() => {
+            return Product.find({});
+        }).then((products: IProduct[]) => {
+            mongoose.disconnect();
+            resolve(products);
+        }).catch((error: Error) => {
+            reject(error);
+        });
+    });
+}
+
+export { Product, IProduct, getAllProducts };
