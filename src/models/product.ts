@@ -38,4 +38,17 @@ const getProducts = (category: string): Promise<IProduct[]> => {
     });
 }
 
-export { Product, IProduct, getProducts };
+const getProductsById = (id: string) => {
+    return new Promise((resolve, reject) => {
+        mongoose.connect(dbUrl).then(() => {
+            return Product.findById(id);
+        }).then((product) => {
+            mongoose.disconnect();
+            resolve(product);
+        }).catch((error: Error) => {
+            reject(error);
+        });
+    });
+}
+
+export { Product, IProduct, getProducts, getProductsById };
