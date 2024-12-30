@@ -10,7 +10,7 @@ export default {
         if (category && validCategories.includes(category))
             products = await getProducts(category);
         else
-            products = await getProducts('all');
+            products = await getProducts();
         res.render('index', { products });
     }
 }

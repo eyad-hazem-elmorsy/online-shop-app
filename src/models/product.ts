@@ -1,4 +1,5 @@
 import mongoose, { Document, Schema } from 'mongoose';
+import databasePromiseWrapper from '../Utils/DatabasePromiseWrapper';
 
 const dbUrl: string = process.env.DB_URL || 'mongodb://localhost:27017/online-shop';
 
@@ -22,34 +23,18 @@ const productSchema: Schema<IProduct> = new Schema({
 const Product = mongoose.model<IProduct>('Product', productSchema);
 
 // Services
-const getProducts = (category: string): Promise<IProduct[]> => {
-    return new Promise<IProduct[]>((resolve, reject) => {
-        mongoose.connect(dbUrl).then(() => {
-            if (category === 'all')
-                return Product.find({});
-            else
-                return Product.find({ category: category });
-        }).then((products: IProduct[]) => {
-            mongoose.disconnect();
-            resolve(products);
-        }).catch((error: Error) => {
-            mongoose.disconnect();
-            reject(error);
-        });
+const getProducts = async (category: string = 'all') => {
+    return databasePromiseWrapper(async () => {
+        const products = Product.find();
+        if (category != 'all')
+            products.find({ category: category });
+        return await products;
     });
 }
 
 const getProductsById = (id: string) => {
-    return new Promise((resolve, reject) => {
-        mongoose.connect(dbUrl).then(() => {
-            return Product.findById(id);
-        }).then((product) => {
-            mongoose.disconnect();
-            resolve(product);
-        }).catch((error: Error) => {
-            mongoose.disconnect();
-            reject(error);
-        });
+    return databasePromiseWrapper(async () => {
+        return await Product.findById(id);
     });
 }
 
