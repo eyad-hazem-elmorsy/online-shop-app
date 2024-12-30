@@ -1,5 +1,6 @@
 import express, { Express } from 'express';
 import homeRoute from './routes/Home';
+import authRoute from './routes/Auth';
 import productRoute from './routes/Product';
 
 // Create application
@@ -14,6 +15,7 @@ app.set('views', './src/views');
 
 // Routing
 app.use('/', homeRoute);
+app.use('/', authRoute)
 app.use('/product', productRoute);
 
 export default app;
