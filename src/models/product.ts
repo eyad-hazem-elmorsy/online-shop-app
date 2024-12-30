@@ -33,6 +33,7 @@ const getProducts = (category: string): Promise<IProduct[]> => {
             mongoose.disconnect();
             resolve(products);
         }).catch((error: Error) => {
+            mongoose.disconnect();
             reject(error);
         });
     });
@@ -46,6 +47,7 @@ const getProductsById = (id: string) => {
             mongoose.disconnect();
             resolve(product);
         }).catch((error: Error) => {
+            mongoose.disconnect();
             reject(error);
         });
     });
