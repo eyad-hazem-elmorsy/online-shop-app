@@ -22,6 +22,9 @@ const productSchema: Schema<IProduct> = new Schema({
 
 const Product = mongoose.model<IProduct>('Product', productSchema);
 
+const validCategories = ['clothes', 'phones', 'computers'] as const
+type Category = typeof validCategories[number]
+
 // Services
 const getProducts = async (category: string = 'all') => {
     return databasePromiseWrapper(async () => {
@@ -38,4 +41,4 @@ const getProductsById = (id: string) => {
     });
 }
 
-export { Product, IProduct, getProducts, getProductsById };
+export { Product, IProduct, getProducts, getProductsById, validCategories, Category };
