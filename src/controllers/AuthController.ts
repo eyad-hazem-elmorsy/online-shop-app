@@ -14,7 +14,9 @@ export default {
     },
 
     getLogin: (req: Request, res: Response) => {
-        res.render('login');
+        res.render('login', {
+            authError: req.flash('authError')[0]
+        });
     },
 
     postLogin: (req: Request, res: Response) => {
@@ -23,7 +25,10 @@ export default {
             req.session.user = user;
             res.redirect('/');
         })
-        .catch(err => res.redirect('/login'));
+        .catch((err) => {
+            req.flash('authError', err.message);
+            res.redirect('/login');
+        });
     },
 
     Logout: (req: Request, res: Response) => {

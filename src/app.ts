@@ -3,6 +3,7 @@ import homeRoute from './routes/Home';
 import authRoute from './routes/Auth';
 import productRoute from './routes/Product';
 import { sessionMiddleware } from './middlewares';
+import flash from 'connect-flash';
 
 // Create application
 const app: Express = express();
@@ -11,6 +12,7 @@ const app: Express = express();
 app.use(express.static('assets'));
 app.use(express.urlencoded({ extended: true }));
 
+app.use(flash());
 app.use(sessionMiddleware);
 
 // Setting a template engine
