@@ -25,10 +25,8 @@ const createNewUser = async (username: string, email: string, password: string) 
     return databasePromiseWrapper(async () => {
         // Check if user exists
         const existingUser = await User.findOne({email: email});
-        if (existingUser) {
-            mongoose.disconnect();
+        if (existingUser)
             throw new Error('E-mail is used');
-        }
 
         // Creating new user
         const hashedPassword = await bcrybt.hash(password, 10);
@@ -43,4 +41,20 @@ const createNewUser = async (username: string, email: string, password: string) 
     })
 }
 
-export { User, IUser, createNewUser };
+const login = async (email: string, password: string) => {
+    return databasePromiseWrapper(async () => {
+        // Check if user is not existing
+        const user = await User.findOne({email: email});
+        if (!user)
+            throw new Error('Incorrect email or password');
+
+        // Password comparing
+        const same = await bcrybt.compare(password, user.password);
+        if (!same)
+            throw new Error('Incorrect email or password');
+        
+        return user;
+    })
+}
+
+export { User, IUser, createNewUser, login };

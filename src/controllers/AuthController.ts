@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { createNewUser } from '../models/auth';
+import { createNewUser, login } from '../models/auth';
 
 export default {
     // Requests' handlers
@@ -15,5 +15,14 @@ export default {
 
     getLogin: (req: Request, res: Response) => {
         res.render('login');
+    },
+
+    postLogin: (req: Request, res: Response) => {
+        login(req.body.email, req.body.password)
+        .then((user) => {
+            req.session.user = user;
+            res.redirect('/');
+        })
+        .catch(err => res.redirect('/login'));
     }
 }

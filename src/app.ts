@@ -2,12 +2,16 @@ import express, { Express } from 'express';
 import homeRoute from './routes/Home';
 import authRoute from './routes/Auth';
 import productRoute from './routes/Product';
+import { sessionMiddleware } from './middlewares';
 
 // Create application
 const app: Express = express();
 
 // Determine assets path
 app.use(express.static('assets'));
+app.use(express.urlencoded({ extended: true }));
+
+app.use(sessionMiddleware);
 
 // Setting a template engine
 app.set('view engine', 'ejs');
