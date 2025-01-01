@@ -11,4 +11,7 @@ router.post('/signup', authController.postSignup);
 router.get('/login', authController.getLogin);
 router.post('/login', authController.postLogin);
 
+// Logout middlewares
+router.all('/logout', authController.Logout);
+
 export default router;

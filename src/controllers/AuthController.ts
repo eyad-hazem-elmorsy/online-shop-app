@@ -24,5 +24,9 @@ export default {
             res.redirect('/');
         })
         .catch(err => res.redirect('/login'));
+    },
+
+    Logout: (req: Request, res: Response) => {
+        req.session.destroy(() => res.redirect('/'));
     }
 }
