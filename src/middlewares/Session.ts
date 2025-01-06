@@ -1,12 +1,5 @@
-declare module 'express-session' {
-    interface SessionData {
-        user: IUser;
-    }
-}
-
 import session from 'express-session';
 import ConnectMongoDBSession from 'connect-mongodb-session';
-import { IUser } from '../models/auth';
 
 const SessionStore = ConnectMongoDBSession(session);
 
