@@ -21,7 +21,7 @@ app.set('views', './src/views');
 
 // Routing
 app.use('/', homeRoute);
-app.use('/', authRoute)
+app.use('/', authRoute);
 app.use('/product', productRoute);
 
 export default app;

@@ -1,4 +1,4 @@
-import BaseError from "./BaseError";
+import BaseError from './BaseError';
 
 export default class DuplicateEmailError extends BaseError {
     constructor() {

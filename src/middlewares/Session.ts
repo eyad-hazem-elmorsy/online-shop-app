@@ -16,6 +16,6 @@ const sessionMiddleware = session({
     },
     store: STORE,
     resave: false
-})
+});
 
 export default sessionMiddleware;

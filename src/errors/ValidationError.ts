@@ -1,5 +1,8 @@
-import BaseError from "./BaseError";
-import { FieldValidationError, ValidationError as ExpressValidatorError } from "express-validator";
+import BaseError from './BaseError';
+import {
+    FieldValidationError,
+    ValidationError as ExpressValidatorError
+} from 'express-validator';
 
 export default class ValidationError extends BaseError {
     public path: string;
@@ -10,7 +13,7 @@ export default class ValidationError extends BaseError {
 
     static mapErrors(errs: ExpressValidatorError[]): ValidationError[] {
         return errs
-            .filter((err) => err.type === 'field')
+            .filter(err => err.type === 'field')
             .map(err => new ValidationError(err));
     }
 }

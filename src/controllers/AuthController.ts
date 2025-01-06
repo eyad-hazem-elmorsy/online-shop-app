@@ -12,7 +12,11 @@ export default {
     },
 
     postSignup: MiddlewareWrapper(async (req: Request, res: Response) => {
-        await createNewUser(req.body.username, req.body.email, req.body.password);
+        await createNewUser(
+            req.body.username,
+            req.body.email,
+            req.body.password
+        );
         return res.redirect('/login');
     }, '/signup'),
 
@@ -31,4 +35,4 @@ export default {
     Logout: (req: Request, res: Response) => {
         req.session.destroy(() => res.redirect('/'));
     }
-}
+};

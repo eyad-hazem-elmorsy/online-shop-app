@@ -1,5 +1,10 @@
 import { Request, Response } from 'express';
-import { IProduct, getProducts, validCategories, Category } from '../models/product';
+import {
+    IProduct,
+    getProducts,
+    validCategories,
+    Category
+} from '../models/product';
 
 export default {
     // Requests' handlers
@@ -8,8 +13,7 @@ export default {
         let products: IProduct[];
         if (category && validCategories.includes(category as Category))
             products = await getProducts(category);
-        else
-            products = await getProducts();
+        else products = await getProducts();
         res.render('index', { products });
     }
-}
+};
