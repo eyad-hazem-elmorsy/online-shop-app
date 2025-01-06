@@ -10,6 +10,17 @@
         <input type="password" class="form-control" name="confirmPassword" placeholder="Confirm Password">
         <input type="submit" value="Create Account" class="btn btn-primary">
     </form>
+    <% if (authError) { %>
+        <br>
+        <p class="alert alert-danger">
+            <%= authError.message %>
+        </p>
+    <% } %>
+    <% for (let err of validationErrors) { %>
+        <p class="alert alert-danger">
+            <%= err.message %>
+        </p>
+    <% } %>
     <br>
     <div>
         Already have account? <a href="/login">Log in</a>
