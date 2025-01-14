@@ -23,5 +23,17 @@ export default {
             else throw new Error('Passwords are not equal');
         }),
         validationResult('/signup')
+    ],
+
+    login: [
+        check('email')
+            .notEmpty()
+            .withMessage('Email is required')
+            .isEmail()
+            .withMessage('Invalid email format'),
+        check('password')
+            .notEmpty()
+            .withMessage('Password is required'),
+        validationResult('/login')
     ]
 };

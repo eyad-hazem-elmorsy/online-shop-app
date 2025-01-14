@@ -22,7 +22,8 @@ export default {
 
     getLogin: (req: Request, res: Response) => {
         res.render('login', {
-            authError: req.flash('authError')[0]
+            authError: req.flash('authError')[0],
+            validationErrors: req.flash('validationErrors')
         });
     },
 

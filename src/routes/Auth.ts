@@ -10,7 +10,7 @@ router.post('/signup', expressValidators.signup, authController.postSignup);
 
 // Login middlewares
 router.get('/login', authController.getLogin);
-router.post('/login', authController.postLogin);
+router.post('/login', expressValidators.login, authController.postLogin);
 
 // Logout middlewares
 router.all('/logout', authController.Logout);
