@@ -31,9 +31,7 @@ export default {
             .withMessage('Email is required')
             .isEmail()
             .withMessage('Invalid email format'),
-        check('password')
-            .notEmpty()
-            .withMessage('Password is required'),
+        check('password').notEmpty().withMessage('Password is required'),
         validationResult('/login')
     ]
 };
