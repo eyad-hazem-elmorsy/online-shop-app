@@ -14,6 +14,9 @@ export default {
         if (category && validCategories.includes(category as Category))
             products = await getProducts(category);
         else products = await getProducts();
-        res.render('index', { products: products, isUser: req.session.user });
+        res.render('index', {
+            products: products,
+            validationError: req.flash('validationErrors')[0]
+        });
     }
 };

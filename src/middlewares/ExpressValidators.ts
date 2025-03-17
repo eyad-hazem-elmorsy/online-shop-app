@@ -33,5 +33,15 @@ export default {
             .withMessage('Invalid email format'),
         check('password').notEmpty().withMessage('Password is required'),
         validationResult('/login')
+    ],
+
+    addCartItem: [
+        check('amount')
+            .not()
+            .isEmpty()
+            .withMessage('Amount is required')
+            .isInt({ min: 1 })
+            .withMessage('Amount must be at least 1'),
+        validationResult()
     ]
 };

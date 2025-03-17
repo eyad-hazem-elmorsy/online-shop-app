@@ -2,6 +2,7 @@ import express, { Express } from 'express';
 import homeRoute from './routes/Home';
 import authRoute from './routes/Auth';
 import productRoute from './routes/Product';
+import cartRoute from './routes/Cart';
 import { sessionMiddleware } from './middlewares';
 import flash from 'connect-flash';
 
@@ -20,8 +21,13 @@ app.set('view engine', 'ejs');
 app.set('views', './src/views');
 
 // Routing
+app.use((req, res, next) => {
+    res.locals.isUser = req.session.user;
+    next();
+});
 app.use('/', homeRoute);
 app.use('/', authRoute);
 app.use('/product', productRoute);
+app.use('/cart', cartRoute);
 
 export default app;

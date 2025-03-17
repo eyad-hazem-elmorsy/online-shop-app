@@ -1,6 +1,12 @@
 <%- include('parts/header') %>
 <%- include('parts/navbar') %>
 
+<% if (validationError) { %>
+    <p class="alert alert-danger">
+        <%= validationError.message %>
+    </p>
+<% } %>
+
 <div class="container">
 
     <% if (!product) { %>
@@ -13,6 +19,10 @@
                 <img src="<%= product.image %>" class="w-100 h-100 mb-3">
                 <form action="/cart" method="POST">
                     <input type="number" name="amount" class="form-control mb-3">
+                    <input type="hidden" name="name" value="<%= product.name %>">
+                    <input type="hidden" name="price" value="<%= product.price %>">
+                    <input type="hidden" name="productId" value="<%= product._id %>">
+                    <input type="hidden" name="redirectTo" value="/product/<%= product._id %>">
                     <input type="submit" value="Add to cart" class="btn btn-primary">
                 </form>
             </div>

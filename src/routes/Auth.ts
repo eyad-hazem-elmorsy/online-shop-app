@@ -24,6 +24,6 @@ router.post(
 );
 
 // Logout middlewares
-router.all('/logout', authGuard.isAuth, authController.Logout);
+router.all('/logout', authController.Logout);
 
 export default router;

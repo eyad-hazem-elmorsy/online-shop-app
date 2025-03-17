@@ -4,13 +4,13 @@ import InternalServerError from '../errors/InternalServerError';
 
 export default <T>(
     middleware: (req: Request, res: Response, next: NextFunction) => Promise<T>,
-    redirectPath: string
+    redirectPath?: string
 ) => {
     return (req: Request, res: Response, next: NextFunction) => {
         middleware(req, res, next).catch(err => {
-            if (err instanceof BaseError) req.flash('authError', err);
-            else req.flash('authError', new InternalServerError());
-            res.redirect(redirectPath);
+            if (err instanceof BaseError) req.flash('Error', err);
+            else req.flash('Error', new InternalServerError());
+            res.redirect(req.body.redirectTo || redirectPath || '/');
         });
     };
 };
