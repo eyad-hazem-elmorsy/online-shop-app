@@ -12,5 +12,15 @@ router.post(
     ExpressValidators.addCartItem,
     cartController.postCart
 );
+router.get('/', cartController.getCart);
+
+router.post(
+    '/save',
+    authGuard.isAuth,
+    ExpressValidators.addCartItem,
+    cartController.postSave
+);
+
+router.post('/delete', authGuard.isAuth, cartController.postDelete);
 
 export default router;

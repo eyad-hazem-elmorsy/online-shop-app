@@ -8,7 +8,6 @@ export default {
         res.render('signup', {
             authError: req.flash('Error')[0],
             validationErrors: req.flash('validationErrors'),
-            isUser: false
         });
     },
 
@@ -25,7 +24,6 @@ export default {
         res.render('login', {
             authError: req.flash('Error')[0],
             validationErrors: req.flash('validationErrors'),
-            isUser: false
         });
     },
 
