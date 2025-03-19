@@ -30,6 +30,6 @@ app.use('/', homeRoute);
 app.use('/', authRoute);
 app.use('/product', productRoute);
 app.use('/cart', cartRoute);
-app.use('/orders', orderRoute)
+app.use('/orders', orderRoute);
 
 export default app;

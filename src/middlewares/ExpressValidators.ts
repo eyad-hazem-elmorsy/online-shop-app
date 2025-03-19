@@ -46,10 +46,7 @@ export default {
     ],
 
     placeOrder: [
-        check('address')
-            .not()
-            .isEmpty()
-            .withMessage('Address is required'),
+        check('address').not().isEmpty().withMessage('Address is required'),
         validationResult()
     ]
 };

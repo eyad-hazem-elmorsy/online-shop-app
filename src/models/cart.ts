@@ -49,9 +49,13 @@ const addNewItem = async (data: AddNewItemArgs) => {
 
 const getItemsByUserId = async (userId: string) => {
     return databasePromiseWrapper(async () => {
-        return await CartItem.find({ userId: userId }, {}, { sort: { timestamp: 1 } });
+        return await CartItem.find(
+            { userId: userId },
+            {},
+            { sort: { timestamp: 1 } }
+        );
     });
-}
+};
 
 const editItem = async (id: string, newData: Partial<ICartItem>) => {
     return databasePromiseWrapper(async () => {
@@ -71,4 +75,12 @@ const deleteAllItems = async (userId: string) => {
     });
 };
 
-export { ICartItem, CartItem, addNewItem, getItemsByUserId, editItem, deleteItem, deleteAllItems };
+export {
+    ICartItem,
+    CartItem,
+    addNewItem,
+    getItemsByUserId,
+    editItem,
+    deleteItem,
+    deleteAllItems
+};

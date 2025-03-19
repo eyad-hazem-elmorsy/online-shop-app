@@ -14,17 +14,9 @@ router.post(
 );
 router.get('/', authGuard.isAuth, orderController.getOrders);
 
-router.post(
-    '/cancel',
-    authGuard.isAuth,
-    orderController.postCancel
-);
+router.post('/cancel', authGuard.isAuth, orderController.postCancel);
 
-router.post(
-    '/cancel-all',
-    authGuard.isAuth,
-    orderController.postCancelAll
-);
+router.post('/cancel-all', authGuard.isAuth, orderController.postCancelAll);
 
 router.get('/verify', authGuard.isAuth, orderController.getVerify);
 
