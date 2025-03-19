@@ -43,5 +43,13 @@ export default {
             .isInt({ min: 1 })
             .withMessage('Amount must be at least 1'),
         validationResult()
+    ],
+
+    placeOrder: [
+        check('address')
+            .not()
+            .isEmpty()
+            .withMessage('Address is required'),
+        validationResult()
     ]
 };

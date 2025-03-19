@@ -1,7 +1,6 @@
 import { Request, Response } from 'express';
 import MiddlewareWrapper from '../Utils/MiddlewareWrapper';
-import { addNewItem, CartItem, deleteAllItems, deleteItem, editItem, getItemsByUserId } from '../models/cart';
-import { timeStamp } from 'console';
+import { addNewItem, deleteAllItems, deleteItem, editItem, getItemsByUserId } from '../models/cart';
 
 export default {
     // Requests' handlers
@@ -19,7 +18,8 @@ export default {
 
     getCart: async (req: Request, res: Response) => {
         const items = await getItemsByUserId(String(req.session.user!._id));
-        res.render('cart', { items: items, validationError: req.flash('validationErrors')[0] });
+
+        res.render('cart', { items: items, validationError: req.flash('validationErrors')[0], Error: req.flash('Error')[0] });
     },
 
     postSave: MiddlewareWrapper(async (req: Request, res: Response) => {
@@ -28,12 +28,12 @@ export default {
     }, '/cart'),
 
     postDelete: MiddlewareWrapper(async (req: Request, res: Response) => {
-        await deleteItem(req.body.cartId);
+        await deleteItem(req.body.cartId, String(req.session.user!._id));
         res.redirect('/cart');
     }, '/cart'),
 
     postDeleteAll: MiddlewareWrapper(async (req: Request, res: Response) => {
-        await deleteAllItems();
+        await deleteAllItems(String(req.session.user!._id));
         res.redirect('/cart');
     }, '/cart'),
 };

@@ -1,6 +1,5 @@
 import mongoose, { Document, Schema } from 'mongoose';
 import databasePromiseWrapper from '../Utils/DatabasePromiseWrapper';
-import { timeStamp } from 'console';
 
 const dbUrl: string =
     process.env.DB_URL || 'mongodb://localhost:27017/online-shop';
@@ -60,15 +59,15 @@ const editItem = async (id: string, newData: Partial<ICartItem>) => {
     });
 };
 
-const deleteItem = async (id: string) => {
+const deleteItem = async (id: string, userId: string) => {
     return databasePromiseWrapper(async () => {
-        await CartItem.findByIdAndDelete(id);
+        await CartItem.findOneAndDelete({ _id: id, userId: userId });
     });
 };
 
-const deleteAllItems = async () => {
+const deleteAllItems = async (userId: string) => {
     return databasePromiseWrapper(async () => {
-        await CartItem.deleteMany({});
+        await CartItem.deleteMany({ userId: userId });
     });
 };
 

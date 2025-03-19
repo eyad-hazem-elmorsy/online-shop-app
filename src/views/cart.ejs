@@ -6,6 +6,11 @@
         <%= validationError.message %>
     </p>
 <% } %>
+<% if (Error) { %>
+    <p class="alert alert-danger">
+        <%= Error.message %>
+    </p>
+<% } %>
 
 <div class="container">
     <% if (items.length === 0) { %>
@@ -27,7 +32,7 @@
                         <td> <%= items[i].name %> </td>
                         <td> <%= items[i].price %> $ </td>
                         <form method="POST">
-                            <td> <input type="text" name="amount" class="form-control" value="<%= items[i].amount %>"> </td>
+                            <td> <input type="number" name="amount" class="form-control" value="<%= items[i].amount %>"> </td>
                             <td> <%= items[i].price * items[i].amount %> $ </td>
                             <td>
                                 <input type="hidden" name="cartId" value="<%= items[i]._id %>">
@@ -41,8 +46,13 @@
             </tbody>
         </table>
     <% } %>
-    <form method="POST" action="/cart/delete-all">
-        <input type="submit" class="btn btn-danger" value="Delete All">
+    <% if (items.length) { %>
+        <form method="POST" action="/cart/delete-all">
+            <input type="submit" class="btn btn-danger" value="Delete All">
+        </form>
+    <% } %>
+    <form method="GET" action="/orders/verify">
+        <input type="submit" class="btn btn-success" value="Place Order">
     </form>
 </div>
 

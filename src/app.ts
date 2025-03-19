@@ -3,6 +3,7 @@ import homeRoute from './routes/Home';
 import authRoute from './routes/Auth';
 import productRoute from './routes/Product';
 import cartRoute from './routes/Cart';
+import orderRoute from './routes/Order';
 import { sessionMiddleware } from './middlewares';
 import flash from 'connect-flash';
 
@@ -29,5 +30,6 @@ app.use('/', homeRoute);
 app.use('/', authRoute);
 app.use('/product', productRoute);
 app.use('/cart', cartRoute);
+app.use('/orders', orderRoute)
 
 export default app;

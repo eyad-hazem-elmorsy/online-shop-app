@@ -10,6 +10,7 @@ export default <T>(
         middleware(req, res, next).catch(err => {
             if (err instanceof BaseError) req.flash('Error', err);
             else req.flash('Error', new InternalServerError());
+            console.error(err);
             res.redirect(req.body.redirectTo || redirectPath || '/');
         });
     };
