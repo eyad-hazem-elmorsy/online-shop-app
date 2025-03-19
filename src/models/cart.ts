@@ -38,8 +38,13 @@ const CartItem = mongoose.model<ICartItem>('Cart', cartSchema);
 // Services
 const addNewItem = async (data: AddNewItemArgs) => {
     return databasePromiseWrapper(async () => {
-        const item = new CartItem(data);
-        return await item.save();
+        const item = await CartItem.findOne({ productId: data.productId });
+        let newItem = new CartItem(data);
+        if (item) {
+            newItem.amount += item!.amount;
+            await CartItem.findByIdAndDelete(item._id);
+        }
+        return await newItem.save();
     });
 };
 
@@ -61,4 +66,10 @@ const deleteItem = async (id: string) => {
     });
 };
 
-export { ICartItem, CartItem, addNewItem, getItemsByUserId, editItem, deleteItem };
+const deleteAllItems = async () => {
+    return databasePromiseWrapper(async () => {
+        await CartItem.deleteMany({});
+    });
+};
+
+export { ICartItem, CartItem, addNewItem, getItemsByUserId, editItem, deleteItem, deleteAllItems };

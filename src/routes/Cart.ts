@@ -23,4 +23,6 @@ router.post(
 
 router.post('/delete', authGuard.isAuth, cartController.postDelete);
 
+router.post('/delete-all', authGuard.isAuth, cartController.postDeleteAll);
+
 export default router;

@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import MiddlewareWrapper from '../Utils/MiddlewareWrapper';
-import { addNewItem, CartItem, deleteItem, editItem, getItemsByUserId } from '../models/cart';
+import { addNewItem, CartItem, deleteAllItems, deleteItem, editItem, getItemsByUserId } from '../models/cart';
 import { timeStamp } from 'console';
 
 export default {
@@ -29,6 +29,11 @@ export default {
 
     postDelete: MiddlewareWrapper(async (req: Request, res: Response) => {
         await deleteItem(req.body.cartId);
+        res.redirect('/cart');
+    }, '/cart'),
+
+    postDeleteAll: MiddlewareWrapper(async (req: Request, res: Response) => {
+        await deleteAllItems();
         res.redirect('/cart');
     }, '/cart'),
 };
