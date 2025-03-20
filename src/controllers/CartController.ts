@@ -24,7 +24,6 @@ export default {
 
     getCart: async (req: Request, res: Response) => {
         const items = await getItemsByUserId(String(req.session.user!._id));
-
         res.render('cart', {
             items: items,
             validationError: req.flash('validationErrors')[0],
