@@ -1,5 +1,6 @@
 import { check } from 'express-validator';
 import { validationResult } from '.';
+import { validCategories } from '../models/product';
 
 export default {
     signup: [
@@ -48,5 +49,19 @@ export default {
     placeOrder: [
         check('address').not().isEmpty().withMessage('Address is required'),
         validationResult()
+    ],
+
+    uploadImage: [
+        check('name').not().isEmpty().withMessage('Name is required'),
+        check('price')
+            .not()
+            .isEmpty()
+            .withMessage('Price is required')
+            .isInt({ min: 1 })
+            .withMessage('Price must be at least 1'),
+        check('category').optional().isIn(validCategories).withMessage('Invalid category'),
+        check('image').custom((value, { req }) => {
+            return req.file;
+        }).withMessage('Image is required'), validationResult('/admin/add')
     ]
 };

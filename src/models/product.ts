@@ -7,7 +7,15 @@ const dbUrl: string =
 // Identifying
 interface IProduct extends Document {
     name: string;
-    image?: string;
+    image: string;
+    price: number;
+    description?: string;
+    category: string;
+}
+
+interface AddNewProductArgs {
+    name: string;
+    image: string;
     price: number;
     description?: string;
     category?: string;
@@ -15,10 +23,10 @@ interface IProduct extends Document {
 
 const productSchema: Schema<IProduct> = new Schema({
     name: { type: String, required: true },
-    image: { type: String, required: false },
+    image: { type: String, required: true },
     price: { type: Number, required: true },
     description: { type: String, required: false },
-    category: { type: String, required: false }
+    category: { type: String, default: 'other' }
 });
 
 const Product = mongoose.model<IProduct>('Product', productSchema);
@@ -27,6 +35,13 @@ const validCategories = ['clothes', 'phones', 'computers'] as const;
 type Category = (typeof validCategories)[number];
 
 // Services
+const addNewProduct = async(data: AddNewProductArgs) => {
+    return databasePromiseWrapper(async () => {
+        let product = new Product(data);
+        return await product.save();
+    })
+}
+
 const getProducts = async (category: string = 'all') => {
     return databasePromiseWrapper(async () => {
         const products = Product.find();
@@ -44,6 +59,7 @@ const getProductsById = (id: string) => {
 export {
     Product,
     IProduct,
+    addNewProduct,
     getProducts,
     getProductsById,
     validCategories,
