@@ -35,12 +35,12 @@ const validCategories = ['clothes', 'phones', 'computers'] as const;
 type Category = (typeof validCategories)[number];
 
 // Services
-const addNewProduct = async(data: AddNewProductArgs) => {
+const addNewProduct = async (data: AddNewProductArgs) => {
     return databasePromiseWrapper(async () => {
         let product = new Product(data);
         return await product.save();
-    })
-}
+    });
+};
 
 const getProducts = async (category: string = 'all') => {
     return databasePromiseWrapper(async () => {

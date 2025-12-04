@@ -59,9 +59,15 @@ export default {
             .withMessage('Price is required')
             .isInt({ min: 1 })
             .withMessage('Price must be at least 1'),
-        check('category').optional().isIn(validCategories).withMessage('Invalid category'),
-        check('image').custom((value, { req }) => {
-            return req.file;
-        }).withMessage('Image is required'), validationResult('/admin/add')
+        check('category')
+            .optional()
+            .isIn(validCategories)
+            .withMessage('Invalid category'),
+        check('image')
+            .custom((value, { req }) => {
+                return req.file;
+            })
+            .withMessage('Image is required'),
+        validationResult('/admin/add')
     ]
 };

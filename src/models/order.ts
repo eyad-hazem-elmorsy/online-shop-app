@@ -1,6 +1,7 @@
 import mongoose, { Document, Schema } from 'mongoose';
 import databasePromiseWrapper from '../Utils/DatabasePromiseWrapper';
 import { ICartItem } from './cart';
+import { getIdByEmail } from './auth';
 
 const dbUrl: string =
     process.env.DB_URL || 'mongodb://localhost:27017/online-shop';
@@ -48,6 +49,34 @@ const orderSchema: Schema<IOrder> = new Schema({
 const Order = mongoose.model<IOrder>('Order', orderSchema);
 
 // Services
+const getOrders = async (status: string, email: string) => {
+    const userId = await getIdByEmail(email);
+    return databasePromiseWrapper(async () => {
+        if (!status && !userId)
+            return await Order.find({}, {}, { sort: { timestamp: 1 } });
+        else if (status === 'all' && !userId)
+            return await Order.find({}, {}, { sort: { timestamp: 1 } });
+        else if (status === 'all')
+            return await Order.find(
+                { userId: userId },
+                {},
+                { sort: { timestamp: 1 } }
+            );
+        else if (!userId)
+            return await Order.find(
+                { status: status },
+                {},
+                { sort: { timestamp: 1 } }
+            );
+        else
+            return await Order.find(
+                { status: status, userId: userId },
+                {},
+                { sort: { timestamp: 1 } }
+            );
+    });
+};
+
 const addNewOrder = async (data: AddNewOrderArgs) => {
     return databasePromiseWrapper(async () => {
         const order = new Order(data);
@@ -62,6 +91,12 @@ const getOrdersByUserId = async (userId: string) => {
             {},
             { sort: { timestamp: 1 } }
         );
+    });
+};
+
+const updateOrderStatus = async (id: string, status: string) => {
+    return databasePromiseWrapper(async () => {
+        return await Order.findByIdAndUpdate(id, { status: status });
     });
 };
 
@@ -80,8 +115,10 @@ const cancelAllOrders = async (userId: string) => {
 export {
     IOrder,
     Order,
+    getOrders,
     addNewOrder,
     getOrdersByUserId,
     cancelOrder,
-    cancelAllOrders
+    cancelAllOrders,
+    updateOrderStatus
 };

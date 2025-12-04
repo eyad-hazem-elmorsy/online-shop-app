@@ -1,6 +1,7 @@
 <%- include('parts/header') %>
 <%- include('parts/navbar') %>
 
+
 <% if (validationError) { %>
     <p class="alert alert-danger">
         <%= validationError.message %>
@@ -10,23 +11,41 @@
 <div class="container">
     <% if (orders.length === 0) { %>
         <p class="alert alert-danger">There is no orders</p>
+        <form action="/admin/orders/" method="GET">
+            <button class="btn btn-success btn-sm" type="submit">Back to Manage Orders</button>
+        </form>
     <% } else { %>
         <table>
             <thead>
                 <td>No.</td>
+                <td>Email</td>
                 <td>Cost</td>
                 <td>Address</td>
                 <td>Status</td>
+                <td>Time</td>
                 <td></td>
             </thead>
             <tbody>
+                <form action="/admin/orders" method="PUT">
+                    <select name="status" class="form-control">
+                        <option value="all">All</option>
+                        <option value="pending">Pending</option>
+                        <option value="sent">Sent</option>
+                        <option value="completed">Completed</option>
+                    </select>
+                    <br>
+                    <input type="email" class="form-control" name="email" placeholder="Email">
+                    <br>
+                    <input type="submit" class="btn btn-primary" value="Filter">
+                </form>
                 <% for (let i = 0; i < orders.length; ++i) { %>
                     <tr>
                         <td> <%= i + 1 %> </td>
+                        <td> <%= emails[i] %> </td>
                         <td>
                             <table>
                                 <thead>
-                                    <td>no</td>
+                                    <td>No.</td>
                                     <td>Product name</td>
                                     <td>Price</td>
                                     <td>Amount</td>
@@ -36,7 +55,7 @@
                                 <tbody>
                                     <% for (let j = 0; j < orders[i].items.length; ++j) { %>
                                         <tr>
-                                            <td> <%= i + 1 %> </td>
+                                            <td> <%= j + 1 %> </td>
                                             <td> <%= orders[i].items[j].name %> </td>
                                             <td> <%= orders[i].items[j].price %> $ </td>
                                             <td> <%= orders[i].items[j].amount %> </td>
@@ -48,22 +67,21 @@
                         </td>
                         <td> <%= orders[i].cost %> $ </td>
                         <td> <%= orders[i].address %> </td>
-                        <td> <%= orders[i].status %> </td>
-                        <form method="POST" action="/orders/cancel">
-                            <td>
-                                <input type="hidden" name="orderId" value="<%= orders[i]._id %>">
-                                <input type="submit" class="btn btn-danger" value="Cancel">
-                            </td>
-                        </form>
+                        <td>
+                            <form action="/admin/orders/<%= orders[i]._id %>" method="POST">
+                                <select name="status" class="form-control">
+                                    <option value="pending"   <%= orders[i].status === 'pending' ? 'selected' : '' %>>Pending</option>
+                                    <option value="sent"      <%= orders[i].status === 'sent' ? 'selected' : '' %>>Sent</option>
+                                    <option value="completed" <%= orders[i].status === 'completed' ? 'selected' : '' %>>Completed</option>
+                                </select>
+                                <button class="btn btn-success btn-sm" type="submit">Save</button>
+                            </form>
+                        </td>
+                        <td> <%= orders[i].timestamp %> </td>
                     </tr>
                 <% } %>
             </tbody>
         </table>
-    <% } %>
-    <% if (orders.length) { %>
-        <form method="POST" action="/orders/cancel-all">
-            <input type="submit" class="btn btn-danger" value="Cancel All">
-        </form>
     <% } %>
 </div>
 

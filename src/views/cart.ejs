@@ -50,10 +50,10 @@
         <form method="POST" action="/cart/delete-all">
             <input type="submit" class="btn btn-danger" value="Delete All">
         </form>
+        <form method="GET" action="/orders/verify">
+            <input type="submit" class="btn btn-success" value="Place Order">
+        </form>
     <% } %>
-    <form method="GET" action="/orders/verify">
-        <input type="submit" class="btn btn-success" value="Place Order">
-    </form>
 </div>
 
 <%- include('parts/footer') %>

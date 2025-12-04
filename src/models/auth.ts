@@ -63,4 +63,22 @@ const login = async (email: string, password: string) => {
     });
 };
 
-export { User, IUser, createNewUser, login };
+const getEmailsByIds = async (ids: string[]) => {
+    return databasePromiseWrapper(async () => {
+        let emails = [];
+        for (let i = 0; i < ids.length; ++i) {
+            const user = await User.findById(ids[i]);
+            emails[i] = user!.email;
+        }
+        return emails;
+    });
+};
+
+const getIdByEmail = async (email: string) => {
+    return databasePromiseWrapper(async () => {
+        const user = await User.findOne({ email: email });
+        return user?._id;
+    });
+};
+
+export { User, IUser, createNewUser, login, getEmailsByIds, getIdByEmail };
