@@ -6,7 +6,7 @@ export default {
     // Requests' handlers
     getSignup: (req: Request, res: Response) => {
         res.render('signup', {
-            authError: req.flash('Error')[0],
+            authError: req.flash('error')[0],
             validationErrors: req.flash('validationErrors')
         });
     },
@@ -22,7 +22,7 @@ export default {
 
     getLogin: (req: Request, res: Response) => {
         res.render('login', {
-            authError: req.flash('Error')[0],
+            authError: req.flash('error')[0],
             validationErrors: req.flash('validationErrors')
         });
     },

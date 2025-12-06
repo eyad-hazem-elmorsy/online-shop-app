@@ -27,7 +27,7 @@ export default {
         res.render('cart', {
             items: items,
             validationError: req.flash('validationErrors')[0],
-            Error: req.flash('Error')[0]
+            error: req.flash('error')[0]
         });
     }),
 

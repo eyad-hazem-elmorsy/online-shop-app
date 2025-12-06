@@ -1,69 +1,80 @@
 <%- include('parts/header') %>
 <%- include('parts/navbar') %>
+<%- include('parts/flash-messages') %>
 
-<% if (validationError) { %>
-    <p class="alert alert-danger">
-        <%= validationError.message %>
-    </p>
-<% } %>
+<div class="container py-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="mb-0">My Orders</h2>
+        <% if (orders.length) { %>
+            <form method="POST" action="/orders/cancel-all" class="m-0">
+                <button type="submit" class="btn btn-outline-danger btn-sm">Cancel All Orders</button>
+            </form>
+        <% } %>
+    </div>
 
-<div class="container">
     <% if (orders.length === 0) { %>
-        <p class="alert alert-danger">There is no orders</p>
+        <div class="text-center py-5 bg-light rounded">
+            <h3 class="text-muted">No orders found</h3>
+            <a href="/" class="btn btn-primary mt-3">Start Shopping</a>
+        </div>
     <% } else { %>
-        <table>
-            <thead>
-                <td>No.</td>
-                <td>Cost</td>
-                <td>Address</td>
-                <td>Status</td>
-                <td></td>
-            </thead>
-            <tbody>
-                <% for (let i = 0; i < orders.length; ++i) { %>
-                    <tr>
-                        <td> <%= i + 1 %> </td>
-                        <td>
-                            <table>
-                                <thead>
-                                    <td>no</td>
-                                    <td>Product name</td>
-                                    <td>Price</td>
-                                    <td>Amount</td>
-                                    <td>Total</td>
-                                    <td></td>
-                                </thead>
-                                <tbody>
-                                    <% for (let j = 0; j < orders[i].items.length; ++j) { %>
+        <div class="accordion" id="ordersAccordion">
+            <% for (let i = 0; i < orders.length; ++i) { %>
+                <div class="accordion-item mb-3 border rounded overflow-hidden shadow-sm">
+                    <h2 class="accordion-header" id="heading<%= i %>">
+                        <button class="accordion-button <%= i !== 0 ? 'collapsed' : '' %>" type="button" data-bs-toggle="collapse" data-bs-target="#collapse<%= i %>" aria-expanded="<%= i === 0 ? 'true' : 'false' %>" aria-controls="collapse<%= i %>">
+                            <div class="d-flex justify-content-between w-100 me-3 align-items-center">
+                                <span>Order #<%= i + 1 %></span>
+                                <div class="d-flex gap-3 align-items-center">
+                                    <span class="badge bg-secondary rounded-pill"><%= orders[i].status %></span>
+                                    <span class="fw-bold"><%= orders[i].cost %> $</span>
+                                </div>
+                            </div>
+                        </button>
+                    </h2>
+                    <div id="collapse<%= i %>" class="accordion-collapse collapse <%= i === 0 ? 'show' : '' %>" aria-labelledby="heading<%= i %>" data-bs-parent="#ordersAccordion">
+                        <div class="accordion-body">
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <h6 class="text-muted">Shipping Address</h6>
+                                    <p class="mb-0"><%= orders[i].address %></p>
+                                </div>
+                                <div class="col-md-6 text-md-end">
+                                    <form method="POST" action="/orders/cancel">
+                                        <input type="hidden" name="orderId" value="<%= orders[i]._id %>">
+                                        <button type="submit" class="btn btn-danger btn-sm">Cancel Order</button>
+                                    </form>
+                                </div>
+                            </div>
+                            
+                            <h6 class="text-muted mb-3">Items</h6>
+                            <div class="table-responsive">
+                                <table class="table table-sm table-borderless">
+                                    <thead class="border-bottom">
                                         <tr>
-                                            <td> <%= i + 1 %> </td>
-                                            <td> <%= orders[i].items[j].name %> </td>
-                                            <td> <%= orders[i].items[j].price %> $ </td>
-                                            <td> <%= orders[i].items[j].amount %> </td>
-                                            <td> <%= orders[i].items[j].price * orders[i].items[j].amount %> $ </td>
+                                            <th>Product</th>
+                                            <th>Price</th>
+                                            <th>Qty</th>
+                                            <th class="text-end">Total</th>
                                         </tr>
-                                    <% } %>
-                                </tbody>
-                            </table>
-                        </td>
-                        <td> <%= orders[i].cost %> $ </td>
-                        <td> <%= orders[i].address %> </td>
-                        <td> <%= orders[i].status %> </td>
-                        <form method="POST" action="/orders/cancel">
-                            <td>
-                                <input type="hidden" name="orderId" value="<%= orders[i]._id %>">
-                                <input type="submit" class="btn btn-danger" value="Cancel">
-                            </td>
-                        </form>
-                    </tr>
-                <% } %>
-            </tbody>
-        </table>
-    <% } %>
-    <% if (orders.length) { %>
-        <form method="POST" action="/orders/cancel-all">
-            <input type="submit" class="btn btn-danger" value="Cancel All">
-        </form>
+                                    </thead>
+                                    <tbody>
+                                        <% for (let j = 0; j < orders[i].items.length; ++j) { %>
+                                            <tr>
+                                                <td><%= orders[i].items[j].name %></td>
+                                                <td><%= orders[i].items[j].price %> $</td>
+                                                <td><%= orders[i].items[j].amount %></td>
+                                                <td class="text-end"><%= orders[i].items[j].price * orders[i].items[j].amount %> $</td>
+                                            </tr>
+                                        <% } %>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            <% } %>
+        </div>
     <% } %>
 </div>
 

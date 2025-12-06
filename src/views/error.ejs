@@ -1,12 +1,20 @@
 <%- include('parts/header') %>
 <%- include('parts/navbar') %>
+<%- include('parts/flash-messages') %>
 
-Something went wrong!
+<div class="container py-5 text-center">
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-6">
+            <h1 class="display-1 fw-bold text-muted mb-4">Oops!</h1>
+            <h2 class="h4 mb-4">Something went wrong</h2>
+            
+            <% if (!error) { %>
+                <p class="text-muted mb-4">An unexpected error occurred. Please try again later.</p>
+            <% } %>
 
-<% if (Error) { %>
-    <p class="alert alert-danger">
-        <%= Error.message %>
-    </p>
-<% } %>
+            <a href="/" class="btn btn-primary">Return Home</a>
+        </div>
+    </div>
+</div>
 
 <%- include('parts/footer') %>

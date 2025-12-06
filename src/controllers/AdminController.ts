@@ -9,7 +9,7 @@ export default {
     getAdd: (req: Request, res: Response) => {
         res.render('add-product', {
             validationErrors: req.flash('validationErrors'),
-            Error: req.flash('Error')[0]
+            error: req.flash('error')[0]
         });
     },
 

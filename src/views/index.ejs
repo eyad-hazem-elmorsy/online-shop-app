@@ -1,51 +1,51 @@
 <%- include('parts/header') %>
 <%- include('parts/navbar') %>
+<%- include('parts/flash-messages') %>
 
-<br>
-<div class="container">
+<div class="container py-4">
 
-    <form action="/" method="PUT">
-        <select name="category" class="form-control">
-            <option value="all">All</option>
-            <option value="clothes">Clothes</option>
-            <option value="phones">Phones</option>
-            <option value="computers">Computers</option>
-        </select>
-        <br>
-        <input type="submit" class="btn btn-primary" value="Filter">
-    </form>
-    <br>
-
-    <% if (validationError) { %>
-        <p class="alert alert-danger">
-            <%= validationError.message %>
-        </p>
-    <% } %>
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="h4 mb-0">Products</h2>
+        <form action="/" method="GET" class="d-flex gap-2 align-items-center">
+            <select name="category" class="form-select" style="width: auto;">
+                <option value="all">All Categories</option>
+                <option value="clothes">Clothes</option>
+                <option value="phones">Phones</option>
+                <option value="computers">Computers</option>
+            </select>
+            <button type="submit" class="btn btn-primary">Filter</button>
+        </form>
+    </div>
 
     <% if (!products.length) { %>
-        <div class="alert alert-danger">
-            No matched items
+        <div class="text-center py-5">
+            <h3 class="text-muted">No items found</h3>
+            <p class="text-muted-foreground">Try adjusting your filters.</p>
         </div>
     <% } else { %>
-        <div class="row">
+        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-xl-4 g-4">
             <% for (let product of products) { %>
-                <div class="col col-12 col-md-6 col-lg-4 col-xl-3">
-                    <div class="card" style="width: 18rem;">
-                        <img src="<%= product.image %>" class="card-img-top">
-                        <div class="card-body">
-                            <h5 class="card-title">
-                                <a href="/product/<%= product._id %>"><%= product.name %></a>
-                                <p>Price: <%= product.price %> $</p>
+                <div class="col">
+                    <div class="card h-100 border-0 shadow-sm">
+                        <div class="ratio ratio-4x3 bg-light rounded-top overflow-hidden">
+                            <img src="<%= product.image %>" class="card-img-top object-fit-cover" alt="<%= product.name %>">
+                        </div>
+                        <div class="card-body d-flex flex-column">
+                            <h5 class="card-title text-truncate">
+                                <a href="/product/<%= product._id %>" class="text-decoration-none text-dark stretched-link"><%= product.name %></a>
                             </h5>
-                            <form action="/cart" method="POST">
-                                <input type="number" name="amount" class="form-control">
-                                <input type="hidden" name="name" value="<%= product.name %>">
-                                <input type="hidden" name="price" value="<%= product.price %>">
-                                <input type="hidden" name="productId" value="<%= product._id %>">
-                                <input type="hidden" name="redirectTo" value="/">
-                                <br>
-                                <input type="submit" value="Add to cart" class="btn btn-primary">
-                            </form>
+                            <p class="card-text fw-bold text-primary mb-3"><%= product.price %> $</p>
+                            
+                            <div class="mt-auto position-relative" style="z-index: 2;">
+                                <form action="/cart" method="POST" class="d-flex gap-2">
+                                    <input type="number" name="amount" class="form-control" value="1" min="1" style="width: 70px;">
+                                    <input type="hidden" name="name" value="<%= product.name %>">
+                                    <input type="hidden" name="price" value="<%= product.price %>">
+                                    <input type="hidden" name="productId" value="<%= product._id %>">
+                                    <input type="hidden" name="redirectTo" value="/">
+                                    <button type="submit" class="btn btn-outline-primary w-100">Add to Cart</button>
+                                </form>
+                            </div>
                         </div>
                     </div>
                 </div>

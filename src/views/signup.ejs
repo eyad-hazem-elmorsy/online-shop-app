@@ -1,47 +1,72 @@
 <%- include('parts/header') %>
 <%- include('parts/navbar') %>
+<%- include('parts/flash-messages') %>
 
-<div class="container text-center">
-    <h3>Create Account</h3>
-    <form action="/signup" method="POST">
-        <input type="text" class="form-control" name="username" placeholder="Username">
-        <% let usernameError = validationErrors.find(err => err.path === 'username') %>
-        <% if (usernameError) { %>
-            <p class="alert alert-danger">
-                <%= usernameError.message %>
-            </p>
-        <% } %>
-        <input type="email" class="form-control" name="email" placeholder="E-mail">
-        <% let emailError = validationErrors.find(err => err.path === 'email') %>
-        <% if (emailError) { %>
-            <p class="alert alert-danger">
-                <%= emailError.message %>
-            </p>
-        <% } %>
-        <input type="password" class="form-control" name="password" placeholder="Password">
-        <% let passwordError = validationErrors.find(err => err.path === 'password') %>
-        <% if (passwordError) { %>
-            <p class="alert alert-danger">
-                <%= passwordError.message %>
-            </p>
-        <% } %>
-        <input type="password" class="form-control" name="confirmPassword" placeholder="Confirm Password">
-        <% let confirmPasswordError = validationErrors.find(err => err.path === 'confirmPassword') %>
-        <% if (confirmPasswordError) { %>
-            <p class="alert alert-danger">
-                <%= confirmPasswordError.message %>
-            </p>
-        <% } %>
-        <input type="submit" value="Create Account" class="btn btn-primary">
-    </form>
-    <% if (authError) { %>
-        <br>
-        <p class="alert alert-danger">
-            <%= authError.message %>
-        </p>
-    <% } %>
-    <div>
-        Already have account? <a href="/login">Log in</a>
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-12 col-md-6 col-lg-4">
+            <div class="card shadow-sm border-0">
+                <div class="card-body p-4">
+                    <div class="text-center mb-4">
+                        <h3 class="fw-bold">Create Account</h3>
+                        <p class="text-muted">Enter your details to get started</p>
+                    </div>
+
+                    <form action="/signup" method="POST">
+                        <div class="mb-3">
+                            <label class="form-label">Username</label>
+                            <input type="text" class="form-control" name="username" placeholder="johndoe">
+                            <% let usernameError = validationErrors.find(err => err.path === 'username') %>
+                            <% if (usernameError) { %>
+                                <div class="text-danger small mt-1">
+                                    <%= usernameError.message %>
+                                </div>
+                            <% } %>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Email address</label>
+                            <input type="email" class="form-control" name="email" placeholder="name@example.com">
+                            <% let emailError = validationErrors.find(err => err.path === 'email') %>
+                            <% if (emailError) { %>
+                                <div class="text-danger small mt-1">
+                                    <%= emailError.message %>
+                                </div>
+                            <% } %>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Password</label>
+                            <input type="password" class="form-control" name="password" placeholder="••••••••">
+                            <% let passwordError = validationErrors.find(err => err.path === 'password') %>
+                            <% if (passwordError) { %>
+                                <div class="text-danger small mt-1">
+                                    <%= passwordError.message %>
+                                </div>
+                            <% } %>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Confirm Password</label>
+                            <input type="password" class="form-control" name="confirmPassword" placeholder="••••••••">
+                            <% let confirmPasswordError = validationErrors.find(err => err.path === 'confirmPassword') %>
+                            <% if (confirmPasswordError) { %>
+                                <div class="text-danger small mt-1">
+                                    <%= confirmPasswordError.message %>
+                                </div>
+                            <% } %>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary w-100 mb-3">Create Account</button>
+                    </form>
+
+                    <div class="text-center mt-3">
+                        <span class="text-muted">Already have an account?</span> 
+                        <a href="/login" class="text-decoration-none fw-medium">Log in</a>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 
