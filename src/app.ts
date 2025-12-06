@@ -40,8 +40,8 @@ app.use('/orders', orderRoute);
 app.use('/admin', adminRoute);
 
 app.get('/error', (req, res, next) => {
-    const Error = req.flash('Error')[0];
-    res.render('error', { Error });
+    const error = req.flash('error')[0];
+    res.render('error', { error });
 });
 
 app.use((req, res, next) => {
@@ -49,8 +49,8 @@ app.use((req, res, next) => {
 });
 
 const ErrorMiddleware: ErrorRequestHandler = (err, req, res, next) => {
-    if (err instanceof BaseError) req.flash('Error', err);
-    else req.flash('Error', new InternalServerError());
+    if (err instanceof BaseError) req.flash('error', err);
+    else req.flash('error', new InternalServerError());
     res.redirect(req.body.redirectTo || req.redirectTo || '/error');
 };
 

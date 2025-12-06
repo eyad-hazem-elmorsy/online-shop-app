@@ -1,0 +1,58 @@
+<% if ((typeof validationError !== 'undefined' && validationError) || (typeof validationErrors !== 'undefined' && validationErrors && validationErrors.length > 0) || (typeof authError !== 'undefined' && authError) || (typeof error !== 'undefined' && error)) { %>
+    <div class="toast-container">
+        <% if (typeof validationError !== 'undefined' && validationError) { %>
+            <div class="toast-notification error">
+                <div class="toast-content">
+                    <div class="toast-title">Validation Error</div>
+                    <div class="toast-message"><%= validationError.message %></div>
+                </div>
+                <button type="button" class="toast-close" onclick="this.parentElement.remove()">&times;</button>
+            </div>
+        <% } %>
+
+        <% if (typeof validationErrors !== 'undefined' && validationErrors && validationErrors.length > 0) { %>
+            <% validationErrors.forEach(error => { %>
+                <div class="toast-notification error">
+                    <div class="toast-content">
+                        <div class="toast-title">Validation Error</div>
+                        <div class="toast-message"><%= error.message || error.msg %></div>
+                    </div>
+                    <button type="button" class="toast-close" onclick="this.parentElement.remove()">&times;</button>
+                </div>
+            <% }) %>
+        <% } %>
+
+        <% if (typeof authError !== 'undefined' && authError) { %>
+            <div class="toast-notification error">
+                <div class="toast-content">
+                    <div class="toast-title">Authentication Error</div>
+                    <div class="toast-message"><%= authError.message %></div>
+                </div>
+                <button type="button" class="toast-close" onclick="this.parentElement.remove()">&times;</button>
+            </div>
+        <% } %>
+
+        <% if (typeof error !== 'undefined' && error) { %>
+            <div class="toast-notification error">
+                <div class="toast-content">
+                    <div class="toast-title">Error</div>
+                    <div class="toast-message"><%= error.message %></div>
+                </div>
+                <button type="button" class="toast-close" onclick="this.parentElement.remove()">&times;</button>
+            </div>
+        <% } %>
+    </div>
+
+    <script>
+        // Auto-dismiss toasts after 5 seconds
+        setTimeout(() => {
+            const toasts = document.querySelectorAll('.toast-notification');
+            toasts.forEach(toast => {
+                toast.style.opacity = '0';
+                toast.style.transform = 'translateX(100%)';
+                toast.style.transition = 'all 0.3s ease-in';
+                setTimeout(() => toast.remove(), 300);
+            });
+        }, 5000);
+    </script>
+<% } %>

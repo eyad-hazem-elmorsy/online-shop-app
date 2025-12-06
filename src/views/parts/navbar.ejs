@@ -1,47 +1,52 @@
-<nav class="navbar navbar-expand-lg bg-body-tertiary bg-dark border-bottom border-body mb-3" data-bs-theme="dark">
+<nav class="navbar navbar-expand-lg sticky-top mb-4 shadow-sm" data-bs-theme="dark">
     <div class="container">
-      <a class="navbar-brand" href="/">Shop</a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-          <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="/">Home</a>
-          </li>
-          <% if (isUser) { %>
-            <li class="nav-item">
-              <a class="nav-link" href="/cart">Cart</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="/orders">Orders</a>
-            </li>
-          <% } else { %>
-            <li class="nav-item">
-              <a class="nav-link" href="/login">Log in</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="/signup">Sign Up</a>
-            </li>
-          <% } %>
-          <% if (isAdmin) { %>
-            <li class="nav-item">
-              <a class="nav-link" href="/admin/add">Add Product</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="/admin/orders">Manage Orders</a>
-            </li>
-          <% } %>
-        </ul>
-        <% if (isUser) { %>
-          <form action="/logout" method="POST">
-            <input type="submit" value="Log out" class="btn btn-danger">
-          </form>
-        <% } %>
-        <form class="d-flex" role="search">
-          <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-          <button class="btn btn-outline-success" type="submit">Search</button>
-        </form>
-      </div>
+        <a class="navbar-brand d-flex align-items-center gap-2" href="/">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-shopping-bag"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path><line x1="3" y1="6" x2="21" y2="6"></line><path d="M16 10a4 4 0 0 1-8 0"></path></svg>
+            <span class="fw-bold fs-4">Shop</span>
+        </a>
+        
+        <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent" aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarContent">
+            <!-- Centered Navigation Links -->
+            <ul class="navbar-nav mx-auto mb-2 mb-lg-0 align-items-center">
+                <li class="nav-item">
+                    <a class="nav-link px-3" href="/">Home</a>
+                </li>
+                <% if (isUser) { %>
+                    <li class="nav-item">
+                        <a class="nav-link px-3" href="/cart">Cart</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link px-3" href="/orders">Orders</a>
+                    </li>
+                <% } %>
+                <% if (isAdmin) { %>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle px-3" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Admin
+                        </a>
+                        <ul class="dropdown-menu shadow border-0 mt-2 rounded-3 overflow-hidden">
+                            <li><a class="dropdown-item py-2" href="/admin/add">Add Product</a></li>
+                            <li><a class="dropdown-item py-2" href="/admin/orders">Manage Orders</a></li>
+                        </ul>
+                    </li>
+                <% } %>
+            </ul>
+
+            <!-- Right Side Actions -->
+            <div class="d-flex align-items-center gap-3 mt-3 mt-lg-0">
+                <% if (isUser) { %>
+                    <form action="/logout" method="POST" class="m-0">
+                        <button type="submit" class="btn btn-danger btn-sm px-4 rounded-pill fw-medium shadow-sm">Log out</button>
+                    </form>
+                <% } else { %>
+                    <a href="/login" class="nav-link text-white px-3">Log in</a>
+                    <a href="/signup" class="btn btn-light btn-sm px-4 rounded-pill fw-bold shadow-sm text-primary">Sign Up</a>
+                <% } %>
+            </div>
+        </div>
     </div>
-  </nav>
+</nav>

@@ -1,87 +1,107 @@
 <%- include('parts/header') %>
 <%- include('parts/navbar') %>
+<%- include('parts/flash-messages') %>
 
+<div class="container py-5">
+    <h2 class="mb-4">Manage Orders</h2>
 
-<% if (validationError) { %>
-    <p class="alert alert-danger">
-        <%= validationError.message %>
-    </p>
-<% } %>
-
-<div class="container">
-    <% if (orders.length === 0) { %>
-        <p class="alert alert-danger">There is no orders</p>
-        <form action="/admin/orders/" method="GET">
-            <button class="btn btn-success btn-sm" type="submit">Back to Manage Orders</button>
-        </form>
-    <% } else { %>
-        <table>
-            <thead>
-                <td>No.</td>
-                <td>Email</td>
-                <td>Cost</td>
-                <td>Address</td>
-                <td>Status</td>
-                <td>Time</td>
-                <td></td>
-            </thead>
-            <tbody>
-                <form action="/admin/orders" method="PUT">
-                    <select name="status" class="form-control">
-                        <option value="all">All</option>
+    <div class="card shadow-sm border-0 mb-4">
+        <div class="card-body">
+            <form action="/admin/orders" method="GET" class="row g-3 align-items-end">
+                <div class="col-md-4">
+                    <label class="form-label">Status</label>
+                    <select name="status" class="form-select">
+                        <option value="all">All Statuses</option>
                         <option value="pending">Pending</option>
                         <option value="sent">Sent</option>
                         <option value="completed">Completed</option>
                     </select>
-                    <br>
-                    <input type="email" class="form-control" name="email" placeholder="Email">
-                    <br>
-                    <input type="submit" class="btn btn-primary" value="Filter">
-                </form>
-                <% for (let i = 0; i < orders.length; ++i) { %>
-                    <tr>
-                        <td> <%= i + 1 %> </td>
-                        <td> <%= emails[i] %> </td>
-                        <td>
-                            <table>
-                                <thead>
-                                    <td>No.</td>
-                                    <td>Product name</td>
-                                    <td>Price</td>
-                                    <td>Amount</td>
-                                    <td>Total</td>
-                                    <td></td>
-                                </thead>
-                                <tbody>
-                                    <% for (let j = 0; j < orders[i].items.length; ++j) { %>
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label">Email</label>
+                    <input type="email" class="form-control" name="email" placeholder="Filter by email">
+                </div>
+                <div class="col-md-4">
+                    <button type="submit" class="btn btn-primary w-100">Filter Orders</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <% if (orders.length === 0) { %>
+        <div class="text-center py-5 bg-light rounded">
+            <h3 class="text-muted">No orders found</h3>
+            <form action="/admin/orders/" method="GET" class="mt-3">
+                <button class="btn btn-outline-secondary" type="submit">Clear Filters</button>
+            </form>
+        </div>
+    <% } else { %>
+        <div class="accordion" id="adminOrdersAccordion">
+            <% for (let i = 0; i < orders.length; ++i) { %>
+                <div class="accordion-item mb-3 border rounded overflow-hidden shadow-sm">
+                    <h2 class="accordion-header" id="heading<%= i %>">
+                        <button class="accordion-button <%= i !== 0 ? 'collapsed' : '' %>" type="button" data-bs-toggle="collapse" data-bs-target="#collapse<%= i %>" aria-expanded="<%= i === 0 ? 'true' : 'false' %>" aria-controls="collapse<%= i %>">
+                            <div class="d-flex flex-wrap justify-content-between w-100 me-3 align-items-center gap-2">
+                                <div>
+                                    <span class="fw-bold">Order #<%= i + 1 %></span>
+                                    <span class="text-muted ms-2 small"><%= emails[i] %></span>
+                                </div>
+                                <div class="d-flex gap-3 align-items-center">
+                                    <span class="badge bg-secondary rounded-pill"><%= orders[i].status %></span>
+                                    <span class="fw-bold"><%= orders[i].cost %> $</span>
+                                </div>
+                            </div>
+                        </button>
+                    </h2>
+                    <div id="collapse<%= i %>" class="accordion-collapse collapse <%= i === 0 ? 'show' : '' %>" aria-labelledby="heading<%= i %>" data-bs-parent="#adminOrdersAccordion">
+                        <div class="accordion-body">
+                            <div class="row mb-4">
+                                <div class="col-md-4">
+                                    <h6 class="text-muted">Details</h6>
+                                    <p class="mb-1"><strong>Date:</strong> <%= orders[i].timestamp %></p>
+                                    <p class="mb-1"><strong>Address:</strong> <%= orders[i].address %></p>
+                                </div>
+                                <div class="col-md-8">
+                                    <h6 class="text-muted">Update Status</h6>
+                                    <form action="/admin/orders/<%= orders[i]._id %>" method="POST" class="d-flex gap-2">
+                                        <select name="status" class="form-select">
+                                            <option value="pending"   <%= orders[i].status === 'pending' ? 'selected' : '' %>>Pending</option>
+                                            <option value="sent"      <%= orders[i].status === 'sent' ? 'selected' : '' %>>Sent</option>
+                                            <option value="completed" <%= orders[i].status === 'completed' ? 'selected' : '' %>>Completed</option>
+                                        </select>
+                                        <button class="btn btn-success" type="submit">Save</button>
+                                    </form>
+                                </div>
+                            </div>
+                            
+                            <h6 class="text-muted mb-3">Items</h6>
+                            <div class="table-responsive">
+                                <table class="table table-sm table-borderless bg-light rounded">
+                                    <thead class="border-bottom">
                                         <tr>
-                                            <td> <%= j + 1 %> </td>
-                                            <td> <%= orders[i].items[j].name %> </td>
-                                            <td> <%= orders[i].items[j].price %> $ </td>
-                                            <td> <%= orders[i].items[j].amount %> </td>
-                                            <td> <%= orders[i].items[j].price * orders[i].items[j].amount %> $ </td>
+                                            <th class="ps-3">Product</th>
+                                            <th>Price</th>
+                                            <th>Qty</th>
+                                            <th class="text-end pe-3">Total</th>
                                         </tr>
-                                    <% } %>
-                                </tbody>
-                            </table>
-                        </td>
-                        <td> <%= orders[i].cost %> $ </td>
-                        <td> <%= orders[i].address %> </td>
-                        <td>
-                            <form action="/admin/orders/<%= orders[i]._id %>" method="POST">
-                                <select name="status" class="form-control">
-                                    <option value="pending"   <%= orders[i].status === 'pending' ? 'selected' : '' %>>Pending</option>
-                                    <option value="sent"      <%= orders[i].status === 'sent' ? 'selected' : '' %>>Sent</option>
-                                    <option value="completed" <%= orders[i].status === 'completed' ? 'selected' : '' %>>Completed</option>
-                                </select>
-                                <button class="btn btn-success btn-sm" type="submit">Save</button>
-                            </form>
-                        </td>
-                        <td> <%= orders[i].timestamp %> </td>
-                    </tr>
-                <% } %>
-            </tbody>
-        </table>
+                                    </thead>
+                                    <tbody>
+                                        <% for (let j = 0; j < orders[i].items.length; ++j) { %>
+                                            <tr>
+                                                <td class="ps-3"><%= orders[i].items[j].name %></td>
+                                                <td><%= orders[i].items[j].price %> $</td>
+                                                <td><%= orders[i].items[j].amount %></td>
+                                                <td class="text-end pe-3"><%= orders[i].items[j].price * orders[i].items[j].amount %> $</td>
+                                            </tr>
+                                        <% } %>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            <% } %>
+        </div>
     <% } %>
 </div>
 
