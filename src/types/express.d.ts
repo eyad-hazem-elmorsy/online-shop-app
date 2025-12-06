@@ -7,6 +7,7 @@ declare global {
             flash(message: string): BaseError[];
             flash(type: string, message: BaseError[] | BaseError): number;
             flash(type: string, format: string, ...args: any[]): number;
+            redirectTo: sting | undefined;
         }
     }
 }

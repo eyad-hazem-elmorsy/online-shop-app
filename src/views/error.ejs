@@ -1,0 +1,12 @@
+<%- include('parts/header') %>
+<%- include('parts/navbar') %>
+
+Something went wrong!
+
+<% if (Error) { %>
+    <p class="alert alert-danger">
+        <%= Error.message %>
+    </p>
+<% } %>
+
+<%- include('parts/footer') %>

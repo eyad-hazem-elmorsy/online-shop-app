@@ -24,7 +24,7 @@ export default {
         res.redirect('/');
     }, '/admin/add'),
 
-    getManageOrders: async (req: Request, res: Response) => {
+    getManageOrders: MiddlewareWrapper(async (req: Request, res: Response) => {
         const status = req.query.status;
         const email = req.query.email;
         const orders = await getOrders(status as string, email as string);
@@ -35,7 +35,7 @@ export default {
             emails: emails,
             validationError: req.flash('validationErrors')[0]
         });
-    },
+    }),
 
     postManageOrders: MiddlewareWrapper(async (req: Request, res: Response) => {
         await updateOrderStatus(req.params.id, req.body.status);

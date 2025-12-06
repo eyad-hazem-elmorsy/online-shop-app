@@ -5,10 +5,11 @@ import {
     validCategories,
     Category
 } from '../models/product';
+import MiddlewareWrapper from '../Utils/MiddlewareWrapper';
 
 export default {
     // Requests' handlers
-    get: async (req: Request, res: Response) => {
+    get: MiddlewareWrapper(async (req: Request, res: Response) => {
         const category: string = String(req.query.category);
         let products: IProduct[];
         if (category && validCategories.includes(category as Category))
@@ -18,5 +19,5 @@ export default {
             products: products,
             validationError: req.flash('validationErrors')[0]
         });
-    }
+    })
 };

@@ -8,9 +8,8 @@ export default <T>(
 ) => {
     return (req: Request, res: Response, next: NextFunction) => {
         middleware(req, res, next).catch(err => {
-            if (err instanceof BaseError) req.flash('Error', err);
-            else req.flash('Error', new InternalServerError());
-            res.redirect(req.body.redirectTo || redirectPath || '/');
+            req.redirectTo = redirectPath;
+            return next(err);
         });
     };
 };

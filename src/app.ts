@@ -1,4 +1,4 @@
-import express, { Express } from 'express';
+import express, { Express, ErrorRequestHandler } from 'express';
 import homeRoute from './routes/Home';
 import authRoute from './routes/Auth';
 import productRoute from './routes/Product';
@@ -7,6 +7,9 @@ import orderRoute from './routes/Order';
 import adminRoute from './routes/Admin';
 import { sessionMiddleware } from './middlewares';
 import flash from 'connect-flash';
+import BaseError from './errors/BaseError';
+import InternalServerError from './errors/InternalServerError';
+import NotFoundError from './errors/NotFoundError';
 
 // Create application
 const app: Express = express();
@@ -35,5 +38,22 @@ app.use('/product', productRoute);
 app.use('/cart', cartRoute);
 app.use('/orders', orderRoute);
 app.use('/admin', adminRoute);
+
+app.get('/error', (req, res, next) => {
+    const Error = req.flash('Error')[0];
+    res.render('error', { Error });
+});
+
+app.use((req, res, next) => {
+    next(new NotFoundError());
+});
+
+const ErrorMiddleware: ErrorRequestHandler = (err, req, res, next) => {
+    if (err instanceof BaseError) req.flash('Error', err);
+    else req.flash('Error', new InternalServerError());
+    res.redirect(req.body.redirectTo || req.redirectTo || '/error');
+};
+
+app.use(ErrorMiddleware);
 
 export default app;

@@ -22,14 +22,14 @@ export default {
         res.redirect('/cart');
     }),
 
-    getCart: async (req: Request, res: Response) => {
+    getCart: MiddlewareWrapper(async (req: Request, res: Response) => {
         const items = await getItemsByUserId(String(req.session.user!._id));
         res.render('cart', {
             items: items,
             validationError: req.flash('validationErrors')[0],
             Error: req.flash('Error')[0]
         });
-    },
+    }),
 
     postSave: MiddlewareWrapper(async (req: Request, res: Response) => {
         await editItem(req.body.cartId, {
